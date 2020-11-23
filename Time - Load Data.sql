@@ -19,6 +19,78 @@ AS
            ,@SecondOfDay INT    = 0
            ,@AmPm        CHAR(2);
 
+        INSERT INTO Dimension.Time (
+            [Time Key]
+           ,[Hour 24]
+           ,[Hour 24 Short]
+           ,[Hour 24 Medium]
+           ,[Hour 24 Full]
+           ,[Hour 12]
+           ,[Hour 12 Short]
+           ,[Hour 12 Short Trim]
+           ,[Hour 12 Medium]
+           ,[Hour 12 Medium Trim]
+           ,[Hour 12 Full]
+           ,[Hour 12 Full Trim]
+           ,[AM PM Code]
+           ,[AM PM]
+           ,Minute
+           ,[Minute Of Day]
+           ,[Minute Code]
+           ,[Minute Short]
+           ,[Minute 24 Full]
+           ,[Minute 12 Full]
+           ,[Minute 12 Full Trim]
+           ,[Half Hour Code]
+           ,[Half Hour]
+           ,[Half Hour Short]
+           ,[Half Hour 24 Full]
+           ,[Half Hour 12 Full]
+           ,[Half Hour 12 Full Trim]
+           ,Second
+           ,[Second Of Day]
+           ,[Second Short]
+           ,[Full Time 24]
+           ,[Full Time 12]
+           ,[Full Time 12 Trim]
+           ,[Full Time]
+        )
+        VALUES
+             (-1
+             ,0
+             ,'UN'
+             ,'UNKWN'
+             ,'UNKNOWN'
+             ,12
+             ,'UNKWN'
+             ,'UNKWN'
+             ,'UNKNOWN'
+             ,'UNKNOWN'
+             ,'UNKNOWN'
+             ,'UNKNOWN'
+             ,0
+             ,'UN'
+             ,0
+             ,0
+             ,0
+             ,'UN'
+             ,'UNKNOWN'
+             ,'UNKNOWN'
+             ,'UNKNOWN'
+             ,0
+             ,0
+             ,'UN'
+             ,'UNKNOWN'
+             ,'UNKNOWN'
+             ,'UNKNOWN'
+             ,0
+             ,0
+             ,'UN'
+             ,'UNKNOWN'
+             ,'UNKNOWN'
+             ,'UNKNOWN'
+             ,N'00:00:00');
+
         WHILE @Hour < 24
             BEGIN
                 SET @Minute = 0;

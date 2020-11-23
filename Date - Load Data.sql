@@ -42,7 +42,10 @@ AS
             BEGIN
                 DROP TABLE #WorkDayOff;
             END;
-        CREATE TABLE #WorkDayOff (DayOff DATE NOT NULL, CONSTRAINT Temp_DayOff PRIMARY KEY CLUSTERED (DayOff ASC));
+        CREATE TABLE #WorkDayOff (
+            DayOff DATE NOT NULL
+           ,CONSTRAINT Temp_DayOff PRIMARY KEY CLUSTERED (DayOff ASC)
+        );
 
         IF OBJECT_ID('Integration.WorkDayOff') IS NOT NULL
             BEGIN
@@ -55,6 +58,58 @@ AS
 
         /* Truncate and load */
         TRUNCATE TABLE Dimension.Date;
+
+        INSERT INTO Dimension.Date (
+            [Date Key]
+           ,[Full Date Time]
+           ,[Date Name]
+           ,[Date Name US]
+           ,[Date Name EU]
+           ,[Day Of Week]
+           ,[Day Name Of Week]
+           ,[Day Of Month]
+           ,[Day Of Year]
+           ,[Weekday Weekend]
+           ,[Week Of Year]
+           ,[Month Name]
+           ,[Month Of Year]
+           ,[Last Day Of Month]
+           ,[Work Day]
+           ,[Calendar Quarter]
+           ,[Calendar Year]
+           ,[Calendar Year Month]
+           ,[Calendar Year Quarter]
+           ,[Fiscal Month Of Year]
+           ,[Fiscal Quarter]
+           ,[Fiscal Year]
+           ,[Fiscal Year Month]
+           ,[Fiscal Year Quarter]
+        )
+        VALUES
+             (-1
+             ,N'0001-01-01T00:00:00'
+             ,'UNKNOWN'
+             ,'UNKNOWN'
+             ,'UNKNOWN'
+             ,2
+             ,'UNKNOWN'
+             ,1
+             ,1
+             ,'UNKNOWN'
+             ,1
+             ,'UNKNOWN'
+             ,1
+             ,'NA'
+             ,'NA'
+             ,1
+             ,1
+             ,'UNKNOWN'
+             ,'UNKNWN'
+             ,1
+             ,1
+             ,1
+             ,'UNKNOWN'
+             ,'UNKNWN');
 
         WHILE @DateCounter <= @EndDate
             BEGIN

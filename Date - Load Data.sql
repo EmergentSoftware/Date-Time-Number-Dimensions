@@ -72,6 +72,8 @@ AS
            ,[Weekday Weekend]
            ,[Week Of Year]
            ,[Month Name]
+           ,[Month Name Short]
+           ,[Month Year]
            ,[Month Of Year]
            ,[Last Day Of Month]
            ,[Work Day]
@@ -81,7 +83,9 @@ AS
            ,[Calendar Year Quarter]
            ,[Fiscal Month Of Year]
            ,[Fiscal Quarter]
+           ,[Fiscal Quarter Name]
            ,[Fiscal Year]
+           ,[Fiscal Year Name]
            ,[Fiscal Year Month]
            ,[Fiscal Year Quarter]
         )
@@ -98,6 +102,8 @@ AS
              ,'UNKNOWN'
              ,1
              ,'UNKNOWN'
+             ,'UKN'
+             ,'UNKNOWN'
              ,1
              ,'NA'
              ,'NA'
@@ -107,7 +113,9 @@ AS
              ,'UNKNWN'
              ,1
              ,1
+             ,'UKN'
              ,1
+             ,'UNKN'
              ,'UNKNOWN'
              ,'UNKNWN');
 
@@ -163,6 +171,8 @@ AS
                    ,[Weekday Weekend]
                    ,[Week Of Year]
                    ,[Month Name]
+                   ,[Month Name Short]
+                   ,[Month Year]
                    ,[Month Of Year]
                    ,[Last Day Of Month]
                    ,[Work Day]
@@ -172,7 +182,9 @@ AS
                    ,[Calendar Year Quarter]
                    ,[Fiscal Month Of Year]
                    ,[Fiscal Quarter]
+                   ,[Fiscal Quarter Name]
                    ,[Fiscal Year]
+                   ,[Fiscal Year Name]
                    ,[Fiscal Year Month]
                    ,[Fiscal Year Quarter]
                 )
@@ -196,6 +208,8 @@ AS
                       END                                                                                                                                                                                                                 /* Weekday Weekend */
                      ,DATENAME(WEEK, @DateCounter)                                                                                                                                                                                        /* Week Of Year */
                      ,DATENAME(MONTH, @DateCounter)                                                                                                                                                                                       /* Month Name */
+                     ,FORMAT(@DateCounter, 'MMM')                                                                                                                                                                                         /* Month Name Short */
+                     ,FORMAT(@DateCounter, 'MMM') + ' ' + RIGHT('000' + CAST(YEAR(@DateCounter) AS VARCHAR(4)), 4)                                                                                                                        /* Month Year */
                      ,MONTH(@DateCounter)                                                                                                                                                                                                 /* Month Of Year */
                      ,@IsLastDayOfMonthFlag                                                                                                                                                                                               /* Last Day Of Month */
                      ,@IsWorkDayFlag                                                                                                                                                                                                      /* Work Day */
@@ -205,8 +219,9 @@ AS
                      ,RIGHT('000' + CAST(YEAR(@DateCounter) AS VARCHAR(4)), 4) + 'Q' + DATENAME(QUARTER, @DateCounter)                                                                                                                    /* Calendar Year Quarter */
                      ,MONTH(@FiscalCounter)                                                                                                                                                                                               /* Fiscal Month Of Year */
                      ,DATENAME(QUARTER, @FiscalCounter)                                                                                                                                                                                   /* Fiscal Quarter */
+                     ,'FY' + CAST(DATENAME(QUARTER, @FiscalCounter) AS VARCHAR(1))                                                                                                                                                        /* Fiscal Quarter Name */
                      ,YEAR(@FiscalCounter)                                                                                                                                                                                                /* Fiscal Year */
-
+                     ,'FY' + RIGHT('000' + CAST(YEAR(@DateCounter) AS VARCHAR(4)), 2)                                                                                                                                                     /* Fiscal Year Name */
                      ,RIGHT('000' + CAST(YEAR(@FiscalCounter) AS VARCHAR(4)), 4) + '-' + RIGHT('00' + RTRIM(CAST(DATEPART(MONTH, @FiscalCounter) AS CHAR(2))), 2)                                                                         /* Fiscal Year Month */
                      ,RIGHT('000' + CAST(YEAR(@FiscalCounter) AS VARCHAR(4)), 4) + 'Q' + DATENAME(QUARTER, @FiscalCounter)                                                                                                                /* Fiscal Year Quarter */
                     );

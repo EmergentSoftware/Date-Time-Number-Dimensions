@@ -8,30 +8,35 @@ GO
 */
 
 CREATE TABLE Dimension.Date (
-    [Date Key]              INT          NOT NULL
-   ,[Full Date Time]        DATETIME2(7) NOT NULL
-   ,[Date Name]             VARCHAR(10)   NOT NULL
-   ,[Date Name US]          VARCHAR(10)   NOT NULL
-   ,[Date Name EU]          VARCHAR(10)   NOT NULL
-   ,[Day Of Week]           TINYINT      NOT NULL
-   ,[Day Name Of Week]      VARCHAR(9)   NOT NULL
-   ,[Day Of Month]          TINYINT      NOT NULL
-   ,[Day Of Year]           SMALLINT     NOT NULL
-   ,[Weekday Weekend]       CHAR(7)      NOT NULL
-   ,[Week Of Year]          TINYINT      NOT NULL
-   ,[Month Name]            VARCHAR(9)   NOT NULL
-   ,[Month Of Year]         TINYINT      NOT NULL
-   ,[Last Day Of Month]     VARCHAR(3)   NOT NULL
-   ,[Work Day]              VARCHAR(3)   NOT NULL
-   ,[Calendar Quarter]      TINYINT      NOT NULL
-   ,[Calendar Year]         SMALLINT     NOT NULL
-   ,[Calendar Year Month]   CHAR(7)      NOT NULL
-   ,[Calendar Year Quarter] CHAR(6)      NOT NULL
-   ,[Fiscal Month Of Year]  TINYINT      NOT NULL
-   ,[Fiscal Quarter]        TINYINT      NOT NULL
-   ,[Fiscal Year]           INT          NOT NULL
-   ,[Fiscal Year Month]     CHAR(7)      NOT NULL
-   ,[Fiscal Year Quarter]   CHAR(6)      NOT NULL
+    [Date Key]               INT          NOT NULL
+   ,[Full Date Time]         DATETIME2(7) NOT NULL
+   ,[Date Name]              VARCHAR(10)  NOT NULL
+   ,[Date Name US]           VARCHAR(10)  NOT NULL
+   ,[Date Name EU]           VARCHAR(10)  NOT NULL
+   ,[Day Of Week]            TINYINT      NOT NULL
+   ,[Day Name Of Week]       VARCHAR(9)   NOT NULL
+   ,[Day Of Month]           TINYINT      NOT NULL
+   ,[Day Of Year]            SMALLINT     NOT NULL
+   ,[Weekday Weekend]        CHAR(7)      NOT NULL
+   ,[Week Of Year]           TINYINT      NOT NULL
+   ,[Month Name]             VARCHAR(9)   NOT NULL
+   ,[Month Name Short]       CHAR(3)      NOT NULL
+   ,[Month Year]             CHAR(8)      NOT NULL
+   ,[Month Of Year]          TINYINT      NOT NULL
+   ,[Last Day Of Month]      VARCHAR(3)   NOT NULL
+   ,[Work Day]               VARCHAR(3)   NOT NULL
+   ,[Calendar Quarter]       TINYINT      NOT NULL
+   ,[Calendar Year]          SMALLINT     NOT NULL
+   ,[Calendar Year Month]    CHAR(7)      NOT NULL
+   ,[Calendar Year Quarter]  CHAR(6)      NOT NULL
+   ,[Fiscal Month Of Year]   TINYINT      NOT NULL
+   ,[Fiscal Quarter]         TINYINT      NOT NULL
+   ,[Fiscal Quarter Name]    CHAR(3)      NOT NULL
+   ,[Fiscal Year]            INT          NOT NULL
+   ,[Fiscal Year Name Short] CHAR(4)      NOT NULL
+   ,[Fiscal Year Name Long]  CHAR(6)      NOT NULL
+   ,[Fiscal Year Month]      CHAR(7)      NOT NULL
+   ,[Fiscal Year Quarter]    CHAR(6)      NOT NULL
    ,CONSTRAINT Date_Key PRIMARY KEY CLUSTERED ([Date Key] ASC)
 );
 GO
@@ -1050,5 +1055,3 @@ EXEC sys.sp_addextendedproperty
    ,@level1type = N'TABLE'
    ,@level1name = N'Date';
 GO
-
-

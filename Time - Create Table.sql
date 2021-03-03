@@ -1,4 +1,3 @@
-DROP TABLE Dimension.Time;
 CREATE TABLE Dimension.Time (
     [Time Key]               INT         NOT NULL
    ,[Hour 24]                INT         NOT NULL

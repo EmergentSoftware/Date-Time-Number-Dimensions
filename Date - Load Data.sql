@@ -1,7 +1,6 @@
 /**********************************************************************************************************************
 ** Author:       Kevin Martin (Emergent Software)
-** Created On:   11/17/2020
-** Modified On:  11/17/2020
+** Modified On:  3/4/2021
 ** Description:  Populate date dimension
 ** Runtime:      4.5 - 33 minutes (AMD Ryzen 7 3800x 8 cores /16 logical processors | 32 GB memory)
 ** Record Count: 3,652,058 records (479.102 MB uncompressed) for the date range of 0001-01-01 - 9999-12-30
@@ -85,7 +84,8 @@ AS
            ,[Fiscal Quarter]
            ,[Fiscal Quarter Name]
            ,[Fiscal Year]
-           ,[Fiscal Year Name]
+           ,[Fiscal Year Name Short]
+           ,[Fiscal Year Name Long]
            ,[Fiscal Year Month]
            ,[Fiscal Year Quarter]
         )
@@ -116,7 +116,8 @@ AS
              ,'UKN'
              ,1
              ,'UNKN'
-             ,'UNKNOWN'
+             ,'UNKNWN'
+             ,'UNKNWN'
              ,'UNKNWN');
 
         WHILE @DateCounter <= @EndDate
@@ -184,7 +185,8 @@ AS
                    ,[Fiscal Quarter]
                    ,[Fiscal Quarter Name]
                    ,[Fiscal Year]
-                   ,[Fiscal Year Name]
+                   ,[Fiscal Year Name Short]
+                   ,[Fiscal Year Name Long]
                    ,[Fiscal Year Month]
                    ,[Fiscal Year Quarter]
                 )
@@ -221,7 +223,8 @@ AS
                      ,DATENAME(QUARTER, @FiscalCounter)                                                                                                                                                                                   /* Fiscal Quarter */
                      ,'FY' + CAST(DATENAME(QUARTER, @FiscalCounter) AS VARCHAR(1))                                                                                                                                                        /* Fiscal Quarter Name */
                      ,YEAR(@FiscalCounter)                                                                                                                                                                                                /* Fiscal Year */
-                     ,'FY' + RIGHT('000' + CAST(YEAR(@DateCounter) AS VARCHAR(4)), 2)                                                                                                                                                     /* Fiscal Year Name */
+                     ,'FY' + RIGHT('000' + CAST(YEAR(@DateCounter) AS VARCHAR(4)), 2)                                                                                                                                                     /* Fiscal Year Name Short */
+                     ,'FY' + RIGHT('000' + CAST(YEAR(@DateCounter) AS VARCHAR(4)), 4)                                                                                                                                                     /* Fiscal Year Name Long */
                      ,RIGHT('000' + CAST(YEAR(@FiscalCounter) AS VARCHAR(4)), 4) + '-' + RIGHT('00' + RTRIM(CAST(DATEPART(MONTH, @FiscalCounter) AS CHAR(2))), 2)                                                                         /* Fiscal Year Month */
                      ,RIGHT('000' + CAST(YEAR(@FiscalCounter) AS VARCHAR(4)), 4) + 'Q' + DATENAME(QUARTER, @FiscalCounter)                                                                                                                /* Fiscal Year Quarter */
                     );

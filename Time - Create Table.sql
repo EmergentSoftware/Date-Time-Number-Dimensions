@@ -33,5 +33,5 @@ CREATE TABLE Dimension.Time (
    ,[Full Time 12]           CHAR(11)    NOT NULL
    ,[Full Time 12 Trim]      VARCHAR(14) NOT NULL
    ,[Full Time]              TIME(7)     NOT NULL
-   ,CONSTRAINT Time_Key PRIMARY KEY CLUSTERED ([Time Key] ASC)
+   ,CONSTRAINT Dimension_Time_Time_Key PRIMARY KEY CLUSTERED ([Time Key] ASC)
 );

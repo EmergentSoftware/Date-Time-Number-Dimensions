@@ -37,7 +37,7 @@ CREATE TABLE Dimension.Date (
    ,[Fiscal Year Name Long]  CHAR(6)      NOT NULL
    ,[Fiscal Year Month]      CHAR(7)      NOT NULL
    ,[Fiscal Year Quarter]    CHAR(6)      NOT NULL
-   ,CONSTRAINT Date_Key PRIMARY KEY CLUSTERED ([Date Key] ASC)
+   ,CONSTRAINT Dimension_Date_Date_Key PRIMARY KEY CLUSTERED ([Date Key] ASC)
 );
 GO
 

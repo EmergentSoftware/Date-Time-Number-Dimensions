@@ -1,40 +1,40 @@
---TRUNCATE TABLE Dimension.Number;
-
 -- SQL Prompt formatting off
+-- TRUNCATE TABLE Dimension.Number;
+
+/**********************************************************************************************************************
+** Change @HowManyNumberToCreate to the number of numbers you wish to create in your numbers table + zero
+**  Load up your number dimension table once. The quantity of numbers you need will depend on your data.
+**  This is done with a while loops vs a generic batch statement.
+**
+**  Runtimes on (AMD Ryzen 7 3800x 8 cores /16 logical processors | 32 GB memory)
+**         1,000     Numbers  =  0 seconds (0.102 MB)
+**         10,000    Numbers  =  3 seconds (1.070 MB)
+**         100,000   Numbers =   1 minutes 34 seconds (11.016 MB)
+**         1,000,000 Numbers =  23 minutes 39 seconds (121.914 MB)
+**
+**  Numbers table uses: 
+**    Join to find gaps in number join
+**    Lists to output results in a query for the count of number, this allows a result of 0 count for a specific number
+**    Join to return the NumberWord to print on checks, join again for cents
+**    Join to output Roman Numerals
+**    Join to group by number placements tens, hundreds, millions
+**    Join to use as a dimension slicer
+**    Query to find binary, hex numbers
+**    Removing Duplicates from Strings in SQL Serve https://www.mssqltips.com/sqlservertip/4140/removing-duplicates-from-strings-in-sql-server/
+**    Validate the contents of large dynamic SQL strings in SQL Server https://www.mssqltips.com/sqlservertip/3185/validate-the-contents-of-large-dynamic-sql-strings-in-sql-server/
+**    Sort characters withing a string https://vyaskn.tripod.com/fun_with_numbers_in_t-sql_queries.htm
+**    View other uses via Stack Overflow https://stackoverflow.com/search?page=1&tab=Relevance&q=%22numbers%20table%22
+**    View other uses via Stack Exchange https://dba.stackexchange.com/search?q=%22numbers+table%22
+**
+**********************************************************************************************************************/
+DECLARE @HowManyNumberToCreate BIGINT = 1000;
+
+
+
 SET NOCOUNT ON;
-
-/* Change @HowManyNumberToCreate to the number of numbers you wish to create in your numbers table + zero
-*  Load up your number dimension table once. The quantity of numbers you need will depend on your data.
-*  This is done with a while loops vs a generic batch statement.
-*
-*  Runtimes on (AMD Ryzen 7 3800x 8 cores /16 logical processors | 32 GB memory)
-*         1,000     Numbers  =  0 seconds (0.102 MB)
-*         10,000    Numbers  =  3 seconds (1.070 MB)
-*         100,000   Numbers =   1 minutes 34 seconds (11.016 MB)
-*         1,000,000 Numbers =  23 minutes 39 seconds (121.914 MB)
-*
-*  Numbers table uses: 
-*    Join to find gaps in number join
-*    Lists to output results in a query for the count of number, this allows a result of 0 count for a specific number
-*    Join to return the NumberWord to print on checks, join again for cents
-*    Join to output Roman Numerals
-*    Join to group by number placements tens, hundreds, millions
-*    Join to use as a dimension slicer
-*    Query to find binary, hex numbers
-*    Removing Duplicates from Strings in SQL Serve https://www.mssqltips.com/sqlservertip/4140/removing-duplicates-from-strings-in-sql-server/
-*    Validate the contents of large dynamic SQL strings in SQL Server https://www.mssqltips.com/sqlservertip/3185/validate-the-contents-of-large-dynamic-sql-strings-in-sql-server/
-*    Sort characters withing a string https://vyaskn.tripod.com/fun_with_numbers_in_t-sql_queries.htm
-*    View other uses via Stack Overflow https://stackoverflow.com/search?page=1&tab=Relevance&q=%22numbers%20table%22
-*    View other uses via Stack Exchange https://dba.stackexchange.com/search?q=%22numbers+table%22
-*/
-
-DECLARE @HowManyNumberToCreate BIGINT = 100000;
-
-
-
 /* NumberWord Variables */
 DROP TABLE IF EXISTS #NumbersTable;
-CREATE TABLE #NumbersTable (number CHAR(2) NOT NULL, word VARCHAR(10) NOT NULL);
+CREATE TABLE #NumbersTable (Number CHAR(2) NOT NULL, Word VARCHAR(10) NOT NULL);
 DECLARE @InputNumber VARCHAR(38);
 DECLARE @NumberWord VARCHAR(8000);
 DECLARE @Counter INT;
@@ -81,7 +81,7 @@ WHILE @Number <= @HowManyNumberToCreate
             END;
 
         /* Insert data for the numbers and words */
-        INSERT INTO #NumbersTable (number, word)
+        INSERT INTO #NumbersTable (Number, Word)
         VALUES
              ('00', '')         ,('01', 'one')      ,('02', 'two')
 			,('03', 'three')    ,('04', 'four')     ,('05', 'five')
@@ -112,9 +112,9 @@ WHILE @Number <= @HowManyNumberToCreate
                         IF CONVERT(INT, @TensOnes) <= 20 OR @Ones = '0'
                             BEGIN
                                 SET @NumberWord = (
-									SELECT TOP (1) word 
+									SELECT TOP (1) Word 
 									FROM #NumbersTable 
-									WHERE @TensOnes = number
+									WHERE @TensOnes = Number
 								) + CASE @Counter
 										WHEN 1 THEN  '' /* No name */
 										WHEN 2 THEN  ' thousand '
@@ -135,13 +135,13 @@ WHILE @Number <= @HowManyNumberToCreate
                         ELSE
                             BEGIN
                                 SET @NumberWord = ' ' + (
-									SELECT TOP (1) word 
+									SELECT TOP (1) Word 
 									FROM #NumbersTable 
-									WHERE @Tens + '0' = number
+									WHERE @Tens + '0' = Number
 								) + '-' + (
-									SELECT TOP (1) word 
+									SELECT TOP (1) Word 
 									FROM #NumbersTable WHERE 
-									'0' + @Ones = number
+									'0' + @Ones = Number
 								) + CASE @Counter
 										WHEN 1 THEN  '' /* No name */
 										WHEN 2 THEN  ' thousand '
@@ -164,9 +164,9 @@ WHILE @Number <= @HowManyNumberToCreate
                         IF @Hundreds <> '0'
                             BEGIN
                                 SET @NumberWord = (
-									SELECT TOP (1) word 
+									SELECT TOP (1) Word 
 									FROM #NumbersTable 
-									WHERE '0' + @Hundreds = number
+									WHERE '0' + @Hundreds = Number
 								) + ' hundred ' + @NumberWord;
                             END;
                     END;
@@ -243,34 +243,34 @@ WHILE @Number <= @HowManyNumberToCreate
 
         /* Number Placements */
         SET @NumberString = @Number;
-
-        INSERT INTO Dimension.Number (
-            NumberId
-           ,NumberWord
-           ,BinaryNumber
-           ,HexNumber
-           ,EvenOdd
-           ,RomanNumeral
-           ,Ones
-           ,Tens
-           ,Hundreds
-           ,Thousands
-           ,TenThousands
-           ,HundredThousands
-           ,Millions
-           ,TenMillions
-           ,HundredMillions
-           ,Billions
-           ,TenBillions
-           ,HundredBillions
-           ,Trillions
-           ,TenTrillions
-           ,HundredTrillions
-           ,Quadrillions
-           ,TenQuadrillions
-           ,HundredQuadrillions
-           ,Quintillions
-        )
+		
+		INSERT INTO Dimension.Number (
+		    [Number Key]
+		   ,[Number Word]
+		   ,[Binary Number]
+		   ,[Hex Number]
+		   ,[Even Odd]
+		   ,[Roman Numeral]
+		   ,Ones
+		   ,Tens
+		   ,Hundreds
+		   ,Thousands
+		   ,[Ten Thousands]
+		   ,[Hundred Thousands]
+		   ,Millions
+		   ,[Ten Millions]
+		   ,[Hundred Millions]
+		   ,Billions
+		   ,[Ten Billions]
+		   ,[Hundred Billions]
+		   ,Trillions
+		   ,[Ten Trillions]
+		   ,[Hundred Trillions]
+		   ,Quadrillions
+		   ,[Ten Quadrillions]
+		   ,[Hundred Quadrillions]
+		   ,Quintillions
+		)
         SELECT
             NumberId            = @Number
            ,NumberWord          = IIF(@Number = 0, 'Zero', @NumberWord)

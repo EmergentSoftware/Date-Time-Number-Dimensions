@@ -1,30 +1,31 @@
-DROP TABLE IF EXISTS Dimension.Number;
+--DROP TABLE IF EXISTS Dimension.Number;
+/* Remove placement columns (Ones, Tens, ..., Quintillions) you will not need */
 CREATE TABLE Dimension.Number (
-    NumberId            BIGINT       NOT NULL
-   ,NumberWord          VARCHAR(500) NULL
-   ,BinaryNumber        VARCHAR(16)  NULL
-   ,HexNumber           VARCHAR(16)  NULL
-   ,EvenOdd             VARCHAR(4)   NULL
-   ,RomanNumeral        VARCHAR(9)   NULL
-   ,Ones                TINYINT      NULL
-   ,Tens                TINYINT      NULL
-   ,Hundreds            TINYINT      NULL
-   ,Thousands           TINYINT      NULL
-   ,TenThousands        TINYINT      NULL
-   ,HundredThousands    TINYINT      NULL
-   ,Millions            TINYINT      NULL
-   ,TenMillions         TINYINT      NULL
-   ,HundredMillions     TINYINT      NULL
-   ,Billions            TINYINT      NULL
-   ,TenBillions         TINYINT      NULL
-   ,HundredBillions     TINYINT      NULL
-   ,Trillions           TINYINT      NULL
-   ,TenTrillions        TINYINT      NULL
-   ,HundredTrillions    TINYINT      NULL
-   ,Quadrillions        TINYINT      NULL
-   ,TenQuadrillions     TINYINT      NULL
-   ,HundredQuadrillions TINYINT      NULL
-   ,Quintillions        TINYINT      NULL
-   ,CONSTRAINT Dimension_Number_NumberId PRIMARY KEY CLUSTERED (NumberId ASC)
+    [Number Key]           BIGINT       NOT NULL
+   ,[Number Word]          VARCHAR(500) NULL
+   ,[Binary Number]        VARCHAR(16)  NULL
+   ,[Hex Number]           VARCHAR(16)  NULL
+   ,[Even Odd]             VARCHAR(4)   NULL
+   ,[Roman Numeral]        VARCHAR(9)   NULL
+   ,Ones                   TINYINT      NULL
+   ,Tens                   TINYINT      NULL
+   ,Hundreds               TINYINT      NULL
+   ,Thousands              TINYINT      NULL
+   ,[Ten Thousands]        TINYINT      NULL
+   ,[Hundred Thousands]    TINYINT      NULL
+   ,Millions               TINYINT      NULL
+   ,[Ten Millions]         TINYINT      NULL
+   ,[Hundred Millions]     TINYINT      NULL
+   ,Billions               TINYINT      NULL
+   ,[Ten Billions]         TINYINT      NULL
+   ,[Hundred Billions]     TINYINT      NULL
+   ,Trillions              TINYINT      NULL
+   ,[Ten Trillions]        TINYINT      NULL
+   ,[Hundred Trillions]    TINYINT      NULL
+   ,Quadrillions           TINYINT      NULL
+   ,[Ten Quadrillions]     TINYINT      NULL
+   ,[Hundred Quadrillions] TINYINT      NULL
+   ,Quintillions           TINYINT      NULL
+   ,CONSTRAINT Dimension_Number_Number_Key PRIMARY KEY CLUSTERED ([Number Key] ASC)
 );
 GO

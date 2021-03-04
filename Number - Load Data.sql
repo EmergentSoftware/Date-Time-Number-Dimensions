@@ -27,7 +27,9 @@ SET NOCOUNT ON;
 *    View other uses via Stack Overflow https://stackoverflow.com/search?page=1&tab=Relevance&q=%22numbers%20table%22
 *    View other uses via Stack Exchange https://dba.stackexchange.com/search?q=%22numbers+table%22
 */
-DECLARE @HowManyNumberToCreate BIGINT = 1000s;
+
+DECLARE @HowManyNumberToCreate BIGINT = 100000;
+
 
 
 /* NumberWord Variables */

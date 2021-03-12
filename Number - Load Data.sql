@@ -3,7 +3,7 @@
 
 /**********************************************************************************************************************
 ** Change @HowManyNumberToCreate to the number of numbers you wish to create in your numbers table + zero
-**  Load up your number dimension table once. The quantity of numbers you need will depend on your data.
+**  Load up your number (tally) dimension table once. The quantity of numbers you need will depend on your data.
 **  This is done with a while loops vs a generic batch statement.
 **
 **  Runtimes on (AMD Ryzen 7 3800x 8 cores /16 logical processors | 32 GB memory)

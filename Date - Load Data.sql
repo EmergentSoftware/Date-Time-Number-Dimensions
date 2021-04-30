@@ -9,9 +9,11 @@
 **********************************************************************************************************************/
 
 DECLARE
-    @BeginDate              datetime2(7) = '0001-01-01'
-   ,@EndDate                datetime2(7) = '9999-12-30' /* Need to exclude a day for the IsLastDayOfMonth check */
-   ,@UseWorkDayOffTableFlag bit          = 0;           /* Using the WorkDayOff table will override weekends being set as work days off */
+    @BeginDate               datetime2(7) = '0001-01-01'
+   ,@EndDate                 datetime2(7) = '9999-12-30'    /* Need to exclude a day for the IsLastDayOfMonth check */
+   ,@UseWorkDayOffTable      bit          = 0               /* Using the WorkDayOff table will override weekends being set as work days off */
+   ,@SetSaturdayAsWorkDayOff bit          = 1               /* 1 = All Saturdays will set Work Day to "No" */
+   ,@SetSundayAsWorkDayOff   bit          = 1;              /* 1 = All Sundays will set Work Day to "No" */
 
 /*
 ** Number of months to add to the date to get the current Fiscal date.
@@ -43,7 +45,7 @@ CREATE TABLE #WorkDayOff (
 
 IF OBJECT_ID('Integration.WorkDayOff') IS NOT NULL
     BEGIN
-        SET @UseWorkDayOffTableFlag = 1;
+        SET @UseWorkDayOffTable = 1;
         INSERT INTO #WorkDayOff (DayOff) SELECT DayOff FROM Integration.WorkDayOff;
     END;
 
@@ -129,26 +131,26 @@ WHILE @DateCounter <= @EndDate
                 SET @IsLastDayOfMonthFlag = 'Yes';
             END;
 
-        /* Set value for IsWorkDayFlag. Could use Saturday and Sunday like below */
-        IF DATEPART(WEEKDAY, @DateCounter) IN (1, 7) /* Saturday and Sunday */
+        /* Set value for IsWorkDayFlag */
+        SET @IsWorkDayFlag = 'Yes';
+
+        IF DATEPART(WEEKDAY, @DateCounter) = 7 /* Saturday */
+        AND @SetSaturdayAsWorkDayOff = 1
             BEGIN
                 SET @IsWorkDayFlag = 'No';
             END;
-        ELSE
+
+        IF DATEPART(WEEKDAY, @DateCounter) = 1 /* Sunday */
+        AND @SetSundayAsWorkDayOff = 1
             BEGIN
-                SET @IsWorkDayFlag = 'Yes';
+                SET @IsWorkDayFlag = 'No';
             END;
 
-        /* Set value for IsWorkDayFlag. Could use the Integration.WorkDayOff table stores non-work days like holidays. */
-        IF @UseWorkDayOffTableFlag = 1
+        IF @UseWorkDayOffTable = 1
             BEGIN
-                IF EXISTS (SELECT 1 FROM #WorkDayOff AS WDO WHERE WDO.DayOff = @DateCounter)
+                IF EXISTS (SELECT   * FROM  #WorkDayOff AS WDO WHERE WDO.DayOff = @DateCounter)
                     BEGIN
                         SET @IsWorkDayFlag = 'No';
-                    END;
-                ELSE
-                    BEGIN
-                        SET @IsWorkDayFlag = 'Yes';
                     END;
             END;
 
